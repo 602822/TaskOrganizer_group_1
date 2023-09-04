@@ -23,6 +23,7 @@ template.innerHTML = `
 class TaskView extends HTMLElement {
 
 #shadow;
+#url;
 
     constructor() {
         super();
@@ -31,7 +32,7 @@ class TaskView extends HTMLElement {
       this.#shadow = this.attachShadow({mode : "closed"}); 
       this.#shadow.appendChild(content);
       
-      const url = this.getAttribute('data-serviceurl');
+      this.#url = this.getAttribute('data-serviceurl');
       
       const taskbox = this.#shadow.querySelector('task-box');
      const button = this.#shadow.querySelector('button');
@@ -41,7 +42,21 @@ class TaskView extends HTMLElement {
 	 });
      
     }
-
+    async getAllStauses () {
+		
+		try {
+			const response = await fetch(`${url}/allstatuses`, {method: "GET"});
+			
+			if(response.ok) {
+				const allStatuses = response.headers.get("allstatuses");
+				const responseStatus = response.headers.get("responseStatus");
+				
+			}
+		}catch(e) {
+			
+		}
+		
+	}
 }
 
 customElements.define('task-view', TaskView);
