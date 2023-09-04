@@ -22,12 +22,16 @@ template.innerHTML = `
   */
 class TaskView extends HTMLElement {
 
+#shadow;
+
     constructor() {
         super();
-
-        /**
-         * Fill inn rest of code
-         */
+		
+      const content = template.content.cloneNode(true);
+      this.#shadow = this.attachShadow({mode : "closed"}); 
+      this.#shadow.appendChild(content);
+      
+      const url = this.getAttribute('data-serviceurl');
     }
 
 }
