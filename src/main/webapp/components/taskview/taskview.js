@@ -21,28 +21,42 @@ template.innerHTML = `
   * The full application view
   */
 class TaskView extends HTMLElement {
+#shadow;
+#url;
 
-	#shadow;
-	#url;
-
-	constructor() {
-		super();
-
-		const content = template.content.cloneNode(true);
-		this.#shadow = this.attachShadow({ mode: "closed" });
-		this.#shadow.appendChild(content);
-
-		 this.#url = this.getAttribute('data-serviceurl');
-
-		const taskbox = this.#shadow.querySelector('task-box');
-		const button = this.#shadow.querySelector('button');
-		button.addEventListener('click', () => {
-
-			taskbox.show();
-
-		});
-		taskbox.newtaskCallback(this.#saveTask.bind(this));
+    constructor() {
+        super();
 		
+      const content = template.content.cloneNode(true);
+      this.#shadow = this.attachShadow({mode : "closed"}); 
+      this.#shadow.appendChild(content);
+      
+      this.#url = this.getAttribute('data-serviceurl');
+      
+      const taskbox = this.#shadow.querySelector('task-box');
+     const button = this.#shadow.querySelector('button');
+     button.addEventListener('click', () => {
+		
+		taskbox.show(); 
+	 });
+	 taskbox.newtaskCallback(this.#saveTask.bind(this));
+     
+    }
+    async getAllStauses () {
+		
+		try {
+			const response = await fetch(`${this.#url}/allstatuses`, {method: "GET"});
+			
+			if(response.ok) {
+				const allStatuses = response.headers.get("allstatuses");
+				const responseStatus = response.headers.get("responseStatus");
+				
+			}
+		}catch(e) {
+			
+		}
+		
+
 	}
 	
 	async #saveTask(task) {
@@ -58,11 +72,7 @@ class TaskView extends HTMLElement {
 		} catch(e) {
 			
 		}
-		
-		
-		
-		
-	}
+}
 }
 
 customElements.define('task-view', TaskView);
