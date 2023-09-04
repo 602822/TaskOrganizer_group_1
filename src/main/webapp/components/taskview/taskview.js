@@ -22,26 +22,47 @@ template.innerHTML = `
   */
 class TaskView extends HTMLElement {
 
-#shadow;
+	#shadow;
+	#url;
 
-    constructor() {
-        super();
-		
-      const content = template.content.cloneNode(true);
-      this.#shadow = this.attachShadow({mode : "closed"}); 
-      this.#shadow.appendChild(content);
-      
-      const url = this.getAttribute('data-serviceurl');
-      
-      const taskbox = this.#shadow.querySelector('task-box');
-     const button = this.#shadow.querySelector('button');
-     button.addEventListener('click', () => {
-		
-		taskbox.show(); 
-	 });
-     
-    }
+	constructor() {
+		super();
 
+		const content = template.content.cloneNode(true);
+		this.#shadow = this.attachShadow({ mode: "closed" });
+		this.#shadow.appendChild(content);
+
+		 this.#url = this.getAttribute('data-serviceurl');
+
+		const taskbox = this.#shadow.querySelector('task-box');
+		const button = this.#shadow.querySelector('button');
+		button.addEventListener('click', () => {
+
+			taskbox.show();
+
+		});
+		taskbox.newtaskCallback(this.#saveTask.bind(this));
+		
+	}
+	
+	async #saveTask(task) {
+		// Lagre task på tjener
+		// Hvis suksess
+		this.#tasklist.show(task)
+		
+		try {
+			const response = await fetch(this.#url + "/task", {
+				
+			})
+			
+		} catch(e) {
+			
+		}
+		
+		
+		
+		
+	}
 }
 
 customElements.define('task-view', TaskView);
