@@ -45,7 +45,7 @@ class TaskView extends HTMLElement {
     async getAllStauses () {
 		
 		try {
-			const response = await fetch(`${url}/allstatuses`, {method: "GET"});
+			const response = await fetch(`${this.#url}/allstatuses`, {method: "GET"});
 			
 			if(response.ok) {
 				const allStatuses = response.headers.get("allstatuses");
