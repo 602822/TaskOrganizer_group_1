@@ -1,51 +1,129 @@
-const template = document.createElement("template");
-template.innerHTML = `
-    <link rel="stylesheet" type="text/css" href="${import.meta.url.match(/.*\//)[0]}/tasklist.css"/>
-
-    <div id="tasklist"></div>`;
-
-const tasktable = document.createElement("template");
-tasktable.innerHTML = `
-    <table>
-        <thead><tr><th>Task</th><th>Status</th></tr></thead>
-        <tbody></tbody>
-    </table>`;
-
-const taskrow = document.createElement("template");
-taskrow.innerHTML = `
-    <tr>
-        <td></td>
-        <td></td>
-        <td>
-            <select>
-                <option value="0" selected>&lt;Modify&gt;</option>
-            </select>
-        </td>
-        <td><button type="button">Remove</button></td>
-    </tr>`;
-
 /**
   * TaskList
   * Manage view with list of tasks
   */
-class TaskList extends HTMLElement {
+if (customElements.get('task-list') === undefined) {
+    class TaskList extends HTMLElement {
+		
+		#shadow
+		
+		 tasks = [
+{
+id: 1,
+status: "WAITING",
+title: "Paint roof"
+},
+{
+id: 2,
+
+status: "ACTIVE",
+title: "Wash windows"
+},
+{
+id: 3,
+status: "DONE",
+title: "Wash floor"
+}
+]
 
         constructor() {
-                super();
+			
+			
+            super();
 
-        /**
-         * Fill inn rest of code
-         */
+            /**
+             * Fill inn rest of code
+             */
+			
+			
+			
+			this.#shadow = this.attachShadow({mode:"closed"})
+			
+			const div = document.createElement("div")
+			
+			this.#shadow.appendChild(div)
+			
+			
+			
+			
+
+			const taskList = document.querySelector("task-list")
+			
+			
+			const allstatuses = ["<Modify>","ACTIVE","DONE", "WAITING"]
+			
+			
+			
+			
+			for(let task of this.tasks) {
+				taskList.showTask(task);
+				const button = div.querySelector(`button[id="${task.id}"]`)
+		         button.addEventListener('click', () => {
+		         
+		         if(confirm(`Delete task ${task.title}`)) {
+					 this.removeTask(task.id)
+				 }
+				 })
+		         
+		         
+		         
+		         
+		         const dropDownList = div.querySelector(`select[id="${task.id}"]`)
+		         dropDownList.addEventListener('change', () => {
+					const newStatus = dropDownList.value
+					 if(confirm(`Set ${task.title} to ${newStatus}`)) {
+						 if(newStatus !=="<Modify>") {
+						 this.updateTask(task)
+						 }
+						 
+						 
+					 } 
+				 })
+				
+			}
+			
+			this.#createCSS()
+			
+			
+			
+		
+			
+			
+			
+			
+			
+			taskList.setStatuseslist(allstatuses)
+			
+			
+			
+			const numberOfTasks = this.getNumtasks()
+			console.log(numberOfTasks)
+			
+			
+			
+			
         }
+        
+      
 
         /**
          * @public
          * @param {Array} list with all possible task statuses
          */
+		
         setStatuseslist(allstatuses) {
-        /**
-         * Fill inn rest of code
-         */
+          const div =  this.#shadow.querySelector("div")
+        const dropDownLists =  div.querySelectorAll("select")
+        
+        for(let dropDown of dropDownLists) {
+			allstatuses.forEach(status => {
+				const option = document.createElement("option")
+				option.textContent = status
+				dropDown.appendChild(option)
+				
+			});
+			
+		}
         }
 
         /**
@@ -54,9 +132,7 @@ class TaskList extends HTMLElement {
          * @param {function} callback
          */
         changestatusCallback(callback) {
-        /**
-         * Fill inn rest of code
-         */
+			
         }
 
         /**
@@ -65,9 +141,7 @@ class TaskList extends HTMLElement {
          * @param {function} callback
          */
         deletetaskCallback(callback) {
-        /**
-         * Fill inn rest of code
-         */
+            // Fill in code
         }
 
         /**
@@ -76,9 +150,100 @@ class TaskList extends HTMLElement {
          * @param {Object} task - Object representing a task
          */
         showTask(task) {
-        /**
-         * Fill inn rest of code
-         */
+            // Fill in code
+        
+          const div = this.#shadow.querySelector("div")
+          
+          let table =  div.querySelector("table")
+        
+        if(!table) {
+			
+		   table = document.createElement("table")
+		   
+		
+		   
+		   
+			const tableHead = document.createElement("thead")
+			
+			
+			const headerRow = document.createElement("tr")
+			const titleHeader = document.createElement("th")
+			titleHeader.textContent = "Task";
+			titleHeader.id = "task"
+			headerRow.appendChild(titleHeader)
+			
+			
+			const statusHeader = document.createElement("th")
+			statusHeader.textContent = "Status";
+			statusHeader.id = "status"
+			
+			
+			
+			
+			headerRow.appendChild(statusHeader)
+			
+			const tableHeadDiv = document.createElement("div")
+			tableHeadDiv.className = "table-head"
+			
+			tableHeadDiv.appendChild(tableHead)
+			
+			tableHead.appendChild(headerRow)
+			table.appendChild(tableHeadDiv);
+			
+			
+			
+			
+			const tableBody = document.createElement("tbody")
+			
+			
+			const tableBodyDiv = document.createElement("div")
+			tableBodyDiv.className = 'table-body'
+			
+			table.appendChild(tableBodyDiv)
+			
+			tableBodyDiv.appendChild(tableBody)
+			
+		
+			div.appendChild(table)
+			
+			
+	
+			
+			
+			
+		}
+		
+		
+		
+		const tableBody = table.querySelector("tbody")
+		const taskRow = document.createElement("tr")
+		const titleData = document.createElement("td")
+		titleData.textContent = task.title
+		taskRow.appendChild(titleData)
+		taskRow.id = task.id
+		tableBody.appendChild(taskRow)
+		
+		const statusData = document.createElement("td")
+		statusData.id = task.id
+		statusData.textContent = task.status
+		taskRow.appendChild(statusData)
+		
+		
+		const dropDownList = document.createElement("select")
+		dropDownList.id = task.id
+		
+		taskRow.appendChild(dropDownList)
+		
+		
+		
+		const button = document.createElement("button")
+		button.textContent = "Remove"
+		button.id = task.id
+		taskRow.appendChild(button)
+		
+		this.toggleTableVisibility();
+		
+          
         }
 
         /**
@@ -86,9 +251,17 @@ class TaskList extends HTMLElement {
          * @param {Object} task - Object with attributes {'id':taskId,'status':newStatus}
          */
         updateTask(task) {
-        /**
-         * Fill inn rest of code
-         */
+            // Fill in code
+            const dropDownList = this.#shadow.querySelector(`select[id="${task.id}"]`)
+            const statusSelected = dropDownList.value
+            
+            task.status = statusSelected
+            
+            const statusDataElement = this.#shadow.querySelector(`td[id="${task.id}"]`)
+            statusDataElement.textContent = statusSelected;
+            
+            
+            
         }
 
         /**
@@ -96,9 +269,26 @@ class TaskList extends HTMLElement {
          * @param {Integer} task - ID of task to remove
          */
         removeTask(id) {
-        /**
-         * Fill inn rest of code
-         */
+		
+			
+
+			const index = this.tasks.findIndex(task => task.id === id)
+		    this.tasks.splice(index,1);
+		    
+		    const taskRow = this.#shadow.querySelector(`tr[id="${id}"]`)
+		    
+		    if(taskRow) {
+				taskRow.remove()
+			}
+			
+			const length =  this.getNumtasks()
+			
+			console.log("Task Deleted")
+			console.log("Number of Tasks " , length)
+			
+			this.toggleTableVisibility();
+		    
+		    
         }
 
         /**
@@ -106,9 +296,80 @@ class TaskList extends HTMLElement {
          * @return {Number} - Number of tasks on display in view
          */
         getNumtasks() {
-        /**
-         * Fill inn rest of code
-         */
+         return this.tasks.length;
         }
+        
+        
+      toggleTableVisibility () {
+		  const table = this.#shadow.querySelector("table")
+		 
+		  
+		  if(this.getNumtasks() === 0) {
+			  table.style.display = 'none'
+			 
+		  } else {
+			
+			  table.style.display = 'table'
+		  }
+	  }
+        
+        
+    #createCSS() {
+		const style = `
+		th {
+			font-weight: bold;
+		
+			padding-left: 25px;
+			padding-right: 40px;
+			
+			
+		}
+		
+		.table-body {
+			border-top : solid 2px black;
+			border-bottom: solid 2px black;
+		}
+		
+		select {
+			margin-right : 10px;
+			margin-left : 10px;
+		}
+		
+		td {
+			padding-right: 5px;
+			padding-left: 5px;
+			
+		}
+		
+		button {
+			color: white;
+			background-color: #008CBA;
+			border-radius: 4px;
+			border: 2px solid black;	
+		}
+		
+		button:hover {
+			cursor: pointer;
+			
+		}
+		
+		
+		
+		`;
+		
+	const styleElement = document.createElement("style")
+	styleElement.insertAdjacentHTML('beforeend', style)
+	
+	this.#shadow.appendChild(styleElement)
+	
+		
+		
+	}
+		
+	
+        
+        
+    }
+    customElements.define('task-list', TaskList);
 }
-customElements.define('task-list', TaskList);
+
