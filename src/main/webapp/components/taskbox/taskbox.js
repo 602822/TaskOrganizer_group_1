@@ -18,8 +18,7 @@ template.innerHTML = `
   */
 class TaskBox extends HTMLElement {
 	#shadow;
-	#newTaskButton;
-	#dialog
+	#dialog;
 	
 
         constructor() {
@@ -34,6 +33,10 @@ class TaskBox extends HTMLElement {
       
       const taskview = document.querySelector('task-view');
    
+   		const span = this.#shadow.querySelector('span');
+   		span.addEventListener('click', () => {
+			   this.close();
+		   });
       
         }
 
@@ -76,9 +79,7 @@ class TaskBox extends HTMLElement {
          * @public
          */
         close() {
-        /**
-         * Fill inn rest of code
-         */
+        this.#dialog.close();
         }
 }
 

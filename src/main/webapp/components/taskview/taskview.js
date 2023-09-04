@@ -8,7 +8,7 @@ template.innerHTML = `
     <h1>Tasks</h1>
 
     <div id="message"><p>Waiting for server data.</p></div>
-    <div id="newtask"><button type="button" disabled>New task</button></div>
+    <div id="newtask"><button type="button">New task</button></div>
 
     <!-- The task list -->
     <task-list></task-list>
@@ -34,6 +34,11 @@ class TaskView extends HTMLElement {
       const url = this.getAttribute('data-serviceurl');
       
       const taskbox = this.#shadow.querySelector('task-box');
+     const button = this.#shadow.querySelector('button');
+     button.addEventListener('click', () => {
+		
+		taskbox.show(); 
+	 });
      
     }
 
