@@ -17,13 +17,24 @@ template.innerHTML = `
   * Manage view to add a new task
   */
 class TaskBox extends HTMLElement {
+	#shadow;
+	#newTaskButton;
+	#dialog
+	
 
         constructor() {
                 super();
 
-        /**
-         * Fill inn rest of code
-         */
+      const content = template.content.cloneNode(true);
+      this.#shadow = this.attachShadow({mode : "closed"}); 
+      this.#shadow.appendChild(content);
+      
+      this.#dialog = this.#shadow.querySelector('dialog');
+     
+      
+      const taskview = document.querySelector('task-view');
+   
+      
         }
 
         /**
@@ -31,9 +42,11 @@ class TaskBox extends HTMLElement {
          * @public
          */
         show() {
-        /**
-         * Fill inn rest of code
-         */
+
+			this.#dialog.showModal();
+		
+        
+        
         }
 
         /**

@@ -32,6 +32,9 @@ class TaskView extends HTMLElement {
       this.#shadow.appendChild(content);
       
       const url = this.getAttribute('data-serviceurl');
+      
+      const taskbox = this.#shadow.querySelector('task-box');
+     
     }
 
 }

@@ -46,8 +46,8 @@ title: "Wash floor"
 			
 			
 			
-
-			const taskList = document.querySelector("task-list")
+			
+		
 			
 			
 			const allstatuses = ["<Modify>","ACTIVE","DONE", "WAITING"]
@@ -56,7 +56,7 @@ title: "Wash floor"
 			
 			
 			for(let task of this.tasks) {
-				taskList.showTask(task);
+				this.showTask(task);
 				const button = div.querySelector(`button[id="${task.id}"]`)
 		         button.addEventListener('click', () => {
 		         
@@ -92,7 +92,7 @@ title: "Wash floor"
 			
 			
 			
-			taskList.setStatuseslist(allstatuses)
+			this.setStatuseslist(allstatuses)
 			
 			
 			
