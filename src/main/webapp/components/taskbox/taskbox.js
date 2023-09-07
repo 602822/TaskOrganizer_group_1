@@ -42,8 +42,8 @@ class TaskBox extends HTMLElement {
 
 
 
-		const button = this.#dialog.querySelector(`button[type=submit]`)
-		button.addEventListener('click', this.#newtask.bind(this))
+		const button = this.#dialog.querySelector(`button[type=button]`)
+		button.addEventListener('click', this.#newTask.bind(this))
 
 
 
