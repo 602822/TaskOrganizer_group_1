@@ -23,8 +23,8 @@ template.innerHTML = `
 class TaskView extends HTMLElement {
 #shadow;
 #url;
-#statuslist
-#tasklist
+#tasklist;
+
 
     constructor() {
         super();
@@ -34,8 +34,7 @@ class TaskView extends HTMLElement {
       this.#shadow.appendChild(content);
       
       this.#url = this.getAttribute('data-serviceurl');
-      this.#statuslist = [];
-      this.#tasklist = [];
+     this.#tasklist = this.#shadow.querySelector('task-list');
       
       const taskbox = this.#shadow.querySelector('task-box');
      const button = this.#shadow.querySelector('button');
@@ -44,8 +43,40 @@ class TaskView extends HTMLElement {
 		taskbox.show(); 
 	 });
 	 taskbox.newtaskCallback(this.#saveTask.bind(this));
-     
+	 
+	 this.GetAndSetData();
+	 
     }
+   async GetAndSetData() {
+    const taskBox = this.#shadow.querySelector('task-box'); 
+    const taskList = this.#shadow.querySelector('task-list'); 
+
+    try {
+
+      const tasklistdata = await this.GetTaskList();
+      
+      if (Array.isArray(tasklistdata)) {
+        for (let task of tasklistdata) {
+          taskList.showTask(task); 
+        }
+      } else {
+        console.error("Task list data is not a valid array.");
+      }
+      
+      const statusesdata = await this.getAllStatuses();
+      
+      if (Array.isArray(statusesdata)) {
+        taskBox.setStatuseslist(statusesdata); 
+        taskList.setStatuseslist(statusesdata); 
+      } else {
+        console.error("Statuses data is not a valid array.");
+      }
+    } catch (error) {
+      console.error("Error setting data:", error);
+    }
+  }
+
+     
  async getAllStatuses() {
     try {
         const response = await fetch(`${this.#url}/allstatuses`, { method: "GET" });
@@ -53,10 +84,8 @@ class TaskView extends HTMLElement {
         if (response.ok) {
             const result = await response.json();
             if (result.responseStatus) {
-                const statuses = result.statuses;
-                console.log("All statuses:", statuses);
-                
-                this.#statuslist = statuses;
+                 
+            return result.allstatuses;
             } else {
                 console.error("Statuses were not found in the database.");
                
@@ -77,7 +106,7 @@ async GetTaskList() {
         if (response.ok) {
             const result = await response.json();
             if (result.responseStatus) {
-                this.#tasklist = result.tasks
+                return result.tasks
    
             } else {
 			 console.log("The tasks was not found in the database")
