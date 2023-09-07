@@ -85,11 +85,22 @@ async GetTaskList() {
 		
 		try {
 			const response = await fetch(this.#url + "/task", {
+				method: "POST",
+				headers: {"Content-Type": "application/json; charset=utf-8"},
+				body: JSON.stringify({"title":task.title, "status":task.status})
 				
-			})
+			}) 
+			try {
+				const result = await response.json()
+				if(response.ok) {
+				console.log(`Server Response: '${JSON.stringify(result)}'`)
+				}
+			} catch(e) {
+				console.log("Error Message: ", e.message)
+			}
 			
 		} catch(e) {
-			
+			console.log("Error with the POST request: ", e.message)
 		}
 }
 }
