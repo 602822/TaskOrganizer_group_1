@@ -103,6 +103,13 @@ async GetTaskList() {
 			console.log("Error with the POST request: ", e.message)
 		}
 }
+
+
+async
+
+
+
+
 }
 
 customElements.define('task-view', TaskView);
