@@ -24,7 +24,6 @@ class TaskView extends HTMLElement {
 #shadow;
 #url;
 #statuslist
-#responsestatus
 #tasklist
 
     constructor() {
@@ -47,19 +46,28 @@ class TaskView extends HTMLElement {
 	 taskbox.newtaskCallback(this.#saveTask.bind(this));
      
     }
- async getAllStauses () {
+ async getAllStatuses() {
     try {
         const response = await fetch(`${this.#url}/allstatuses`, { method: "GET" });
 
         if (response.ok) {
-            const object = await response.json();
-            if (object) {
-                this.#statuslist = object.allstatuses;
-                this.#responsestatus = object.responseStatus;
+            const result = await response.json();
+            if (result.responseStatus) {
+                const statuses = result.statuses;
+                console.log("All statuses:", statuses);
+                
+                this.#statuslist = statuses;
+            } else {
+                console.error("Statuses were not found in the database.");
+               
             }
+        } else {
+            console.error(`Error, Server returned status code: ${response.status}`);
+       
         }
     } catch (e) {
-        console.log(`Got error: ${e.message}`);
+        console.error(`Error: ${e.message}`);
+      
     }
 }
 async GetTaskList() {
@@ -67,12 +75,17 @@ async GetTaskList() {
         const response = await fetch(`${this.#url}/tasklist`, { method: "GET" });
 
         if (response.ok) {
-            const object = await response.json();
-            if (object) {
-                this.#tasklist = object.tasks
-                this.#responsestatus = object.responseStatus;
-            }
-        }
+            const result = await response.json();
+            if (result.responseStatus) {
+                this.#tasklist = result.tasks
+   
+            } else {
+			 console.log("The tasks was not found in the database")
+			}
+        } else {
+			console.log(`Error, Server returned status code:${response.status}` )
+			
+		}
     } catch (e) {
         console.log(`Got error: ${e.message}`);
     }
