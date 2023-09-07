@@ -23,6 +23,9 @@ template.innerHTML = `
 class TaskView extends HTMLElement {
 #shadow;
 #url;
+#statuslist
+#responsestatus
+#tasklist
 
     constructor() {
         super();
@@ -32,6 +35,8 @@ class TaskView extends HTMLElement {
       this.#shadow.appendChild(content);
       
       this.#url = this.getAttribute('data-serviceurl');
+      this.#statuslist = [];
+      this.#tasklist = [];
       
       const taskbox = this.#shadow.querySelector('task-box');
      const button = this.#shadow.querySelector('button');
@@ -42,21 +47,36 @@ class TaskView extends HTMLElement {
 	 taskbox.newtaskCallback(this.#saveTask.bind(this));
      
     }
-    async getAllStauses () {
-		
-		try {
-			const response = await fetch(`${this.#url}/allstatuses`, {method: "GET"});
-			
-			if(response.ok) {
-				const object = await response.json();
-				
-			}
-		}catch(e) {
-			
-		}
-		
+ async getAllStauses () {
+    try {
+        const response = await fetch(`${this.#url}/allstatuses`, { method: "GET" });
 
-	}
+        if (response.ok) {
+            const object = await response.json();
+            if (object) {
+                this.#statuslist = object.allstatuses;
+                this.#responsestatus = object.responseStatus;
+            }
+        }
+    } catch (e) {
+        console.log(`Got error: ${e.message}`);
+    }
+}
+async GetTaskList() {
+	  try {
+        const response = await fetch(`${this.#url}/tasklist`, { method: "GET" });
+
+        if (response.ok) {
+            const object = await response.json();
+            if (object) {
+                this.#tasklist = object.tasks
+                this.#responsestatus = object.responseStatus;
+            }
+        }
+    } catch (e) {
+        console.log(`Got error: ${e.message}`);
+    }
+}
 	
 	async #saveTask(task) {
 		// Lagre task på tjener
