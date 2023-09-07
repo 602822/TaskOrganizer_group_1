@@ -103,6 +103,30 @@ async GetTaskList() {
 			console.log("Error with the POST request: ", e.message)
 		}
 }
+
+
+async DELETETask(id) {
+    try {
+        const response = await fetch(`${this.#url}/task/${id}`, {
+            method: "DELETE"
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            if (result.responseStatus) {
+                console.log(`Task with ID ${id} has been deleted.`);
+            } else {
+                console.log(`Failed to delete task with ID ${id}.`);
+            }
+        } else {
+            console.log(`Error: status code ${response.status}`);
+        }
+    } catch (e) {
+        console.log(`Got error: ${e.message}`);
+    }
+}
+
+
 }
 
 customElements.define('task-view', TaskView);
