@@ -139,8 +139,28 @@ async DELETETask(id) {
     }
 }
 
-async #updateTask() {
-	
+//Blir ikkje kalla noken plass endo
+async #updateTask(id, status) {
+	try {
+		const response = await fetch(this.#url + "/task/" + id, {
+			method: "PUT",
+			headers: {"Content-Type": "application/json; charset=utf-8"},
+			body: JSON.stringify({"task.status": status})
+		})
+		
+		const result = await response.json();
+		
+		
+		if(response.ok) {
+			console.log(`Updated the status to ${status} on task with id=${id}`)
+			console.log(`${JSON.stringify(result)}`)
+		} else {
+			console.log("Error updating Task: ", result.message)
+		}
+		
+	} catch(e) {
+		console.log("Error message: " , e.message)
+	}
 }
 
 
