@@ -20,10 +20,17 @@ class TaskBox extends HTMLElement {
 	#shadow;
 	#dialog;
 	#callback = null;
+	
+	statusList = [];
 
 
 	constructor() {
 		super();
+
+
+
+        this.statusList = ["<Modify>","ACTIVE","DONE","WAITING"]
+
 
 		const content = template.content.cloneNode(true);
 		this.#shadow = this.attachShadow({ mode: "closed" });
@@ -38,6 +45,7 @@ class TaskBox extends HTMLElement {
 		span.addEventListener('click', () => {
 			this.close();
 		});
+
 
 
 
@@ -73,9 +81,15 @@ class TaskBox extends HTMLElement {
 	 * @param{Array<Object>} statuslist
 	 */
 	setStatuseslist(statuslist) {
-		/**
-		 * Fill inn rest of code
-		 */
+		  const select = this.#shadow.querySelector("select");
+
+           for(let status of statuslist) {
+            const option = document.createElement("option");
+                option.textContent = status;
+                select.appendChild(option);
+
+
+        }
 	}
 
 	/**
