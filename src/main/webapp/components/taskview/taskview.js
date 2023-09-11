@@ -126,6 +126,8 @@ async GetTaskList() {
 		// Lagre task på tjener
 		// Hvis suksess
 	//	this.#tasklist.show(task)
+	
+	
 		
 		try {
 			const response = await fetch(this.#url + "/task", {
@@ -146,6 +148,7 @@ async GetTaskList() {
 		} catch(e) {
 			console.log("Error with the POST request: ", e.message)
 		}
+		location.reload();
 }
 
 
