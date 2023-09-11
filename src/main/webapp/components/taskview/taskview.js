@@ -44,7 +44,7 @@ class TaskView extends HTMLElement {
 	 });
 	 taskbox.newtaskCallback(this.#saveTask.bind(this));
 	 this.#tasklist.deletetaskCallback(this.#DELETETask.bind(this))
-	 
+	 this.#tasklist.changestatusCallback(this.#updateTask.bind(this))
 	 this.GetAndSetData();
 	 
     }
@@ -170,13 +170,13 @@ async #DELETETask(id) {
     }
 }
 
-//Blir ikkje kalla noken plass endo
+
 async #updateTask(id, status) {
 	try {
 		const response = await fetch(this.#url + "/task/" + id, {
 			method: "PUT",
 			headers: {"Content-Type": "application/json; charset=utf-8"},
-			body: JSON.stringify({"task.status": status})
+			body: JSON.stringify({"status": status})
 		})
 		
 		const result = await response.json();

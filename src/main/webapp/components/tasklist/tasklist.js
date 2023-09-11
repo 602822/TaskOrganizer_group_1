@@ -10,6 +10,7 @@ if (customElements.get('task-list') === undefined) {
 		 tasks = [];
 		 
 		 #deleteCallback = null;
+		 #updateCallback = null;
 
         constructor() {
 			
@@ -101,6 +102,7 @@ if (customElements.get('task-list') === undefined) {
          * @param {function} callback
          */
         changestatusCallback(callback) {
+			this.#updateCallback = callback
 			
         }
 
@@ -229,7 +231,7 @@ if (customElements.get('task-list') === undefined) {
             
             const statusDataElement = this.#shadow.querySelector(`td[id="${task.id}"]`)
             statusDataElement.textContent = statusSelected;
-            
+            this.#updateCallback(task.id, statusSelected)
             
             
         }
