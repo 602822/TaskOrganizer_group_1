@@ -7,24 +7,7 @@ if (customElements.get('task-list') === undefined) {
 		
 		#shadow
 		
-		 tasks = [
-{
-id: 1,
-status: "WAITING",
-title: "Paint roof"
-},
-{
-id: 2,
-
-status: "ACTIVE",
-title: "Wash windows"
-},
-{
-id: 3,
-status: "DONE",
-title: "Wash floor"
-}
-]
+		 tasks = [];
 
         constructor() {
 			
@@ -43,21 +26,17 @@ title: "Wash floor"
 			
 			this.#shadow.appendChild(div)
 			
+			this.#createCSS()
+		
 			
-			
+			}
 			
 			
 		
-			
-			
-			const allstatuses = ["<Modify>","ACTIVE","DONE", "WAITING"]
-			
-			
-			
-			
-			for(let task of this.tasks) {
+			initTaskList() {
+					for(let task of this.tasks) {
 				this.showTask(task);
-				const button = div.querySelector(`button[id="${task.id}"]`)
+				const button = this.#shadow.querySelector(`button[id="${task.id}"]`)
 		         button.addEventListener('click', () => {
 		         
 		         if(confirm(`Delete task ${task.title}`)) {
@@ -68,7 +47,7 @@ title: "Wash floor"
 		         
 		         
 		         
-		         const dropDownList = div.querySelector(`select[id="${task.id}"]`)
+		         const dropDownList = this.#shadow.querySelector(`select[id="${task.id}"]`)
 		         dropDownList.addEventListener('change', () => {
 					const newStatus = dropDownList.value
 					 if(confirm(`Set ${task.title} to ${newStatus}`)) {
@@ -81,29 +60,17 @@ title: "Wash floor"
 				 })
 				
 			}
-			
-			this.#createCSS()
-			
+			}
 			
 			
+			
+	
+				
 		
-			
-			
-			
-			
-			
-			this.setStatuseslist(allstatuses)
-			
-			
-			
-			const numberOfTasks = this.getNumtasks()
-			console.log(numberOfTasks)
-			
-			
-			
-			
-        }
-        
+        setTasks(newTasks) {
+        this.tasks = newTasks;
+    }
+
       
 
         /**

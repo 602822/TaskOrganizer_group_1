@@ -56,9 +56,9 @@ class TaskView extends HTMLElement {
       const tasklistdata = await this.GetTaskList();
       
       if (Array.isArray(tasklistdata)) {
-        for (let task of tasklistdata) {
-          taskList.showTask(task); 
-        }
+       taskList.setTasks(tasklistdata);
+       taskList.initTaskList();
+       
       } else {
         console.error("Task list data is not a valid array.");
       }
