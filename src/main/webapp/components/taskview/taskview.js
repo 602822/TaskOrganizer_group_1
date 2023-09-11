@@ -8,7 +8,7 @@ template.innerHTML = `
     <h1>Tasks</h1>
 
     <div id="message"><p>Waiting for server data.</p></div>
-    <div id="newtask"><button type="button">New task</button></div>
+    <div id="newtask"><button type="button" disabled>New task</button></div>
 
     <!-- The task list -->
     <task-list></task-list>
@@ -60,8 +60,18 @@ class TaskView extends HTMLElement {
       if (Array.isArray(tasklistdata)) {
        taskList.setTasks(tasklistdata);
        taskList.initTaskList();
+       const button = this.#shadow.querySelector('button');
+       button.disabled = false;
+       const messagediv = this.#shadow.getElementById("message");
+       const message = messagediv.querySelector("p");
+       const numberOfTasks = taskList.getNumtasks();
+       message.textContent = `Found ${numberOfTasks}` + " tasks.";
+       if(numberOfTasks == 0) {
+		     message.textContent = "No tasks were found.";
+	   }
        
       } else {
+		
         console.error("Task list data is not a valid array.");
       }
       
