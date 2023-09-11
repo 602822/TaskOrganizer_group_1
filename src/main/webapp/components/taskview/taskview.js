@@ -86,6 +86,7 @@ class TaskView extends HTMLElement {
     } catch (error) {
       console.error("Error setting data:", error);
     }
+   
   }
 
      
@@ -181,6 +182,7 @@ async #DELETETask(id) {
     } catch (e) {
         console.log(`Got error: ${e.message}`);
     }
+    location.reload();
 }
 
 
