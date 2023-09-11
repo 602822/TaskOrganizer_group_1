@@ -8,6 +8,8 @@ if (customElements.get('task-list') === undefined) {
 		#shadow
 		
 		 tasks = [];
+		 
+		 #deleteCallback = null;
 
         constructor() {
 			
@@ -109,6 +111,7 @@ if (customElements.get('task-list') === undefined) {
          */
         deletetaskCallback(callback) {
             // Fill in code
+            this.#deleteCallback = callback
         }
 
         /**
@@ -254,6 +257,7 @@ if (customElements.get('task-list') === undefined) {
 			console.log("Number of Tasks " , length)
 			
 			this.toggleTableVisibility();
+			this.#deleteCallback(id);
 		    
 		    
         }

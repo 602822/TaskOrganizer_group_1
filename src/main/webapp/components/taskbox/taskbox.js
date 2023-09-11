@@ -21,6 +21,7 @@ class TaskBox extends HTMLElement {
 	#dialog;
 	#callback = null;
 	
+	
 	statusList = [];
 
 

@@ -43,10 +43,12 @@ class TaskView extends HTMLElement {
 		taskbox.show(); 
 	 });
 	 taskbox.newtaskCallback(this.#saveTask.bind(this));
+	 this.#tasklist.deletetaskCallback(this.#DELETETask.bind(this))
 	 
 	 this.GetAndSetData();
 	 
     }
+    
    async GetAndSetData() {
     const taskBox = this.#shadow.querySelector('task-box'); 
     const taskList = this.#shadow.querySelector('task-list'); 
@@ -123,7 +125,7 @@ async GetTaskList() {
 	async #saveTask(task) {
 		// Lagre task på tjener
 		// Hvis suksess
-		this.#tasklist.show(task)
+	//	this.#tasklist.show(task)
 		
 		try {
 			const response = await fetch(this.#url + "/task", {
@@ -147,7 +149,7 @@ async GetTaskList() {
 }
 
 
-async DELETETask(id) {
+async #DELETETask(id) {
     try {
         const response = await fetch(`${this.#url}/task/${id}`, {
             method: "DELETE"
